@@ -188,9 +188,9 @@ namespace Stream_25_05
             lblDescuentoMensual.Text = "$" + (Math.Round((acuTotalMensualTotal - acuTotalMensual), 2)).ToString();
             lblDescuentoAnual.Text = "$" + (Math.Round((acuTotalAnualTotal - acutTotalAnual), 2)).ToString();
 
-            // Mensaje de alta de paciente en el registro
+            // Mensaje de alta de paciente en el registro (mostrando datos)
 
-            //MessageBox.Show(pacienteCero.MostrarDatos(), "Estado del alta", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(pacienteCero.MostrarDatos(), "Estado del alta", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // metodo para resetear la informacion almacenada en el sistema

@@ -64,6 +64,8 @@ namespace Stream_25_05
         // --------------------------------------------------------------------------
         // Metodos
 
+        // a continuacion definimos los metodos para transformar datos de tipo entero a string, para ser mostrados o utilizados en calculos
+
         public string EspecialidadToString()
         {
             switch (EspecialidadConsulta)
@@ -114,6 +116,8 @@ namespace Stream_25_05
             return "Soltero";
         }
 
+        // metodo general para mostrar datos
+
         public string MostrarDatos()
         {
             string mensaje = $"Alta registrada satisfactoriamente\n" +
@@ -128,11 +132,13 @@ namespace Stream_25_05
                 $"{SexoToString()}  -  {FechaNac.ToShortDateString()}\n\n" +
                 $"Estado civil: \n" +
                 $"{EsCasadoToString()}\n\n";
-            if (TieneObraSocial)
-            {
-                mensaje += $"Obra Social:\n" +
-                    $"{ObraSocialToString()}\n\n";
-            }
+
+            // aqui se comprueba si el usuario tiene obra social, en cuyo caso se adiciona al mensaje la informacion de la obra social, si no la tiene, no se adiciona nada y el mensaje continua mas abajo
+
+            if (TieneObraSocial) mensaje += $"Obra Social:\n" + $"{ObraSocialToString()}\n\n";
+
+            // se adiciona el resto del mensaje
+
             mensaje += $"\n     Datos consulta:\n" +
                 $"    ----------------\n\n" +
                 $"Especialidad de la consulta:\n" +
