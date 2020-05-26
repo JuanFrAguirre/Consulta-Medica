@@ -12,20 +12,28 @@ namespace Stream_25_05
 {
     public partial class frmConsultaMedica : Form
     {
-        private double porcCardio, porcOdonto, porcPedia, porcMedife, porcOSDE, porcPAMI, acuTotalMensual, acutTotalAnual, acuTotalMensualTotal, acuTotalAnualTotal, acuDescuentoMensual, acuDescuentoAnual;
+        // declaramos las variables de contadores, acumuladores y porcentajes
+        private double porcCardio, porcOdonto, porcPedia, porcMedife, porcOSDE, porcPAMI, acuTotalMensual, acutTotalAnual, acuTotalMensualTotal, acuTotalAnualTotal;
+
         private int contCardio, contOdonto, contPedia, contMedife, contOSDE, contPAMI, contConsultas, contConsultasConObraSocial;
         private bool esPrimerPaciente = true;
+
+        // declaramos los objetos de comparacion para el calculo de la especialidad mas cara y la mas barata
+
         private Paciente consultaMax, consultaMin;
 
         public frmConsultaMedica()
         {
             InitializeComponent();
-            porcCardio = porcOdonto = porcPedia = porcMedife = porcOSDE = porcPAMI = acuTotalMensual = acutTotalAnual = acuTotalMensualTotal = acuTotalAnualTotal = acuDescuentoMensual = acuDescuentoAnual = contCardio = contOdonto = contPedia = contMedife = contOSDE = contPAMI = contConsultas = contConsultasConObraSocial = 0;
+
+            // inicializamos todas las variables declaradas previamente
+
+            porcCardio = porcOdonto = porcPedia = porcMedife = porcOSDE = porcPAMI = acuTotalMensual = acutTotalAnual = acuTotalMensualTotal = acuTotalAnualTotal = contCardio = contOdonto = contPedia = contMedife = contOSDE = contPAMI = contConsultas = contConsultasConObraSocial = 0;
         }
 
         private void btnAlta_Click(object sender, EventArgs e)
         {
-            // variable para verificar cual radio button de sexo se ha seleccionado
+            // declaramos una variable para verificar cual radio button de sexo se ha seleccionado
 
             int sexoSeleccionado = 3;
 
@@ -33,8 +41,7 @@ namespace Stream_25_05
             if (rdoFem.Checked) sexoSeleccionado = 2;
             if (rdoOtro.Checked) sexoSeleccionado = 3;
 
-            // --------------------------------------------------------------------------
-            // instancia de clase, y asignacion de propiedades segun datos del formulario (usando constructor con parametros)
+            // declaracion e iniciacion de la instancia de clase, y asignacion de propiedades segun datos del formulario (usando constructor con parametros)
 
             Paciente pacienteCero = new Paciente(
                 int.Parse(txtMatricula.Text),
@@ -67,7 +74,7 @@ namespace Stream_25_05
             //pacienteCero.PrecioConsulta = double.Parse(txtPrecioConsulta.Text);
             //pacienteCero.FechaConsulta = dtpFechaConsulta.Value;
 
-            // consultas x especialidad
+            // definiendo las consultas por especialidad
 
             contConsultas++;
             switch (pacienteCero.EspecialidadConsulta)
@@ -89,7 +96,7 @@ namespace Stream_25_05
             lblPorcOdonto.Text = porcOdonto.ToString() + "%";
             lblPorcPedia.Text = porcPedia.ToString() + "%";
 
-            // consultas x especialidad (solamente si esta seleccionada la opcion de que TIENE obra social
+            // definiendo las consultas por obra social (solamente si esta seleccionada la opcion de que TIENE obra social
 
             if (chkTieneObraSocial.Checked)
             {
@@ -115,7 +122,7 @@ namespace Stream_25_05
                 lblPorcPAMI.Text = porcPAMI.ToString() + "%";
             }
 
-            // especialidad mas cara y precio y mas barata y precio
+            // definiendo la especialidad mas cara y la mas barata, sus precios y sus fechas
 
             if (esPrimerPaciente)
             {
@@ -137,51 +144,86 @@ namespace Stream_25_05
             lblPrecioEspecialidadMasBarata.Text = consultaMin.PrecioConsulta.ToString();
             lblFechaEspecialidadMasBarata.Text = consultaMin.FechaConsulta.ToShortDateString();
 
-            // datos contables acumulados (en proceso, queda para el proximo zoom)
+            // definiendo los datos contables acumulados
 
-            // total mensual
+            //          total mensual
 
-            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month) acuTotalMensualTotal += pacienteCero.PrecioConsulta;
+            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month)
+            {
+                acuTotalMensualTotal += pacienteCero.PrecioConsulta;
+                if (chkTieneObraSocial.Checked)
+                {
+                    switch (pacienteCero.ObraSocial)
+                    {
+                        case 1: acuTotalMensual += pacienteCero.PrecioConsulta * 0.8; break;
+                        case 2: acuTotalMensual += pacienteCero.PrecioConsulta * 0.7; break;
+                        case 3: acuTotalMensual += pacienteCero.PrecioConsulta * 0.95; break;
+                    }
+                }
+                else acuTotalMensual += pacienteCero.PrecioConsulta;
+            }
 
-            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 1) acuTotalMensual += pacienteCero.PrecioConsulta * 0.8;
+            //          total anual
 
-            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 2) acuTotalMensual += pacienteCero.PrecioConsulta * 0.7;
+            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year)
+            {
+                acuTotalAnualTotal += pacienteCero.PrecioConsulta;
+                if (chkTieneObraSocial.Checked)
+                {
+                    switch (pacienteCero.ObraSocial)
+                    {
+                        case 1: acutTotalAnual += pacienteCero.PrecioConsulta * 0.8; break;
+                        case 2: acutTotalAnual += pacienteCero.PrecioConsulta * 0.7; break;
+                        case 3: acutTotalAnual += pacienteCero.PrecioConsulta * 0.95; break;
+                    }
+                }
+                else acutTotalAnual += pacienteCero.PrecioConsulta;
+            }
 
-            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 3) acuTotalMensual += pacienteCero.PrecioConsulta * 0.95;
+            //asignacion de totales y totales de descuento
 
-            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && !chkTieneObraSocial.Checked) acuTotalMensual += pacienteCero.PrecioConsulta;
+            lblTotalMensual.Text = "$" + (Math.Round(acuTotalMensual, 2)).ToString();
+            lblTotalAnual.Text = "$" + (Math.Round(acutTotalAnual, 2)).ToString();
 
-            // total anual
-
-            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year) acuTotalAnualTotal += pacienteCero.PrecioConsulta;
-
-            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 1) acutTotalAnual += pacienteCero.PrecioConsulta * 0.8;
-
-            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 2) acutTotalAnual += pacienteCero.PrecioConsulta * 0.7;
-
-            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 3) acutTotalAnual += pacienteCero.PrecioConsulta * 0.95;
-
-            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year && !chkTieneObraSocial.Checked) acutTotalAnual += pacienteCero.PrecioConsulta;
-
-            lblTotalMensual.Text = "$" + acuTotalMensual.ToString();
-            lblTotalAnual.Text = "$" + acutTotalAnual.ToString();
-
-            lblDescuentoMensual.Text = "$" + (acuTotalMensualTotal - acuTotalMensual).ToString();
-            lblDescuentoAnual.Text = "$" + (acuTotalAnualTotal - acutTotalAnual).ToString();
+            lblDescuentoMensual.Text = "$" + (Math.Round((acuTotalMensualTotal - acuTotalMensual), 2)).ToString();
+            lblDescuentoAnual.Text = "$" + (Math.Round((acuTotalAnualTotal - acutTotalAnual), 2)).ToString();
 
             // Mensaje de alta de paciente en el registro
 
-            MessageBox.Show(pacienteCero.MostrarDatos(), "Estado de la venta", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show(pacienteCero.MostrarDatos(), "Estado del alta", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        // metodo para resetear la informacion almacenada en el sistema
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
+            // seteamos los contadores, porcentajes y acumuladores en 0
+
+            porcCardio = porcOdonto = porcPedia = porcMedife = porcOSDE = porcPAMI = acuTotalMensual = acutTotalAnual = acuTotalMensualTotal = acuTotalAnualTotal = contCardio = contOdonto = contPedia = contMedife = contOSDE = contPAMI = contConsultas = contConsultasConObraSocial = 0;
+
+            // seteamos todos los lbl con resultados a sus valores x defecto
+
+            lblCantCardio.Text = lblCantOdonto.Text = lblCantPedia.Text = lblCantMedife.Text = lblCantOsde.Text = lblCantPAMI.Text = lblEspecialidadMasCara.Text = lblEspecialidadMasBarata.Text = lblPrecioEspecialidadMasBarata.Text = lblPrecioEspecialidadMasCara.Text = lblFechaEspecialidadMasCara.Text = lblFechaEspecialidadMasBarata.Text = lblTotalAnual.Text = lblTotalMensual.Text = lblDescuentoAnual.Text = lblDescuentoMensual.Text = "-";
+
+            lblPorcCardio.Text = lblPorcOdonto.Text = lblPorcPedia.Text = lblPorcMedife.Text = lblPorcOsde.Text = lblPorcPAMI.Text = "%";
         }
+
+        // metodo para verificar si el checkbox de obra social esta seleccionado o no, y ,segun corresponda, habilitar el combo-box de obra social
 
         private void chkTieneObraSocial_CheckedChanged(object sender, EventArgs e)
         {
             if (chkTieneObraSocial.Checked) cboObraSocial.Enabled = true;
             else cboObraSocial.Enabled = false;
+        }
+
+        // metodo para limpiar los campos de ingreso de datos
+
+        private void btnLimpiarCampos_Click(object sender, EventArgs e)
+        {
+            txtMatricula.Text = txtNombre.Text = txtApellido.Text = txtNroDoc.Text = txtPrecioConsulta.Text = "";
+            cboEspecialidad.SelectedIndex = cboObraSocial.SelectedIndex = cboTipoDoc.SelectedIndex = -1;
+            rdoMasc.Checked = rdoFem.Checked = rdoOtro.Checked = chkEsCasado.Checked = chkTieneObraSocial.Checked = false;
+            dtpFechaConsulta.Value = dtpFechaNac.Value = DateTime.Today;
         }
     }
 }

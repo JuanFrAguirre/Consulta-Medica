@@ -58,7 +58,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.btnLimpiarRegistros = new System.Windows.Forms.Button();
             this.btnAlta = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -103,6 +103,7 @@
             this.lblCantOdonto = new System.Windows.Forms.Label();
             this.lblCantCardio = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.btnLimpiarCampos = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -420,7 +421,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btnLimpiar);
+            this.groupBox2.Controls.Add(this.btnLimpiarCampos);
+            this.groupBox2.Controls.Add(this.btnLimpiarRegistros);
             this.groupBox2.Controls.Add(this.btnAlta);
             this.groupBox2.Controls.Add(this.groupBox5);
             this.groupBox2.Controls.Add(this.groupBox8);
@@ -434,19 +436,19 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Informacion del sistema";
             // 
-            // btnLimpiar
+            // btnLimpiarRegistros
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(560, 651);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(236, 66);
-            this.btnLimpiar.TabIndex = 1;
-            this.btnLimpiar.Text = "Limpiar registros";
-            this.btnLimpiar.UseVisualStyleBackColor = true;
-            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
+            this.btnLimpiarRegistros.Location = new System.Drawing.Point(591, 700);
+            this.btnLimpiarRegistros.Name = "btnLimpiarRegistros";
+            this.btnLimpiarRegistros.Size = new System.Drawing.Size(236, 66);
+            this.btnLimpiarRegistros.TabIndex = 1;
+            this.btnLimpiarRegistros.Text = "Resetear informacion";
+            this.btnLimpiarRegistros.UseVisualStyleBackColor = true;
+            this.btnLimpiarRegistros.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // btnAlta
             // 
-            this.btnAlta.Location = new System.Drawing.Point(560, 552);
+            this.btnAlta.Location = new System.Drawing.Point(591, 518);
             this.btnAlta.Name = "btnAlta";
             this.btnAlta.Size = new System.Drawing.Size(236, 66);
             this.btnAlta.TabIndex = 0;
@@ -901,6 +903,16 @@
             this.label15.TabIndex = 0;
             this.label15.Text = "Pediatria";
             // 
+            // btnLimpiarCampos
+            // 
+            this.btnLimpiarCampos.Location = new System.Drawing.Point(591, 609);
+            this.btnLimpiarCampos.Name = "btnLimpiarCampos";
+            this.btnLimpiarCampos.Size = new System.Drawing.Size(236, 66);
+            this.btnLimpiarCampos.TabIndex = 2;
+            this.btnLimpiarCampos.Text = "Limpiar datos";
+            this.btnLimpiarCampos.UseVisualStyleBackColor = true;
+            this.btnLimpiarCampos.Click += new System.EventHandler(this.btnLimpiarCampos_Click);
+            // 
             // frmConsultaMedica
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -982,7 +994,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Button btnLimpiar;
+        private System.Windows.Forms.Button btnLimpiarRegistros;
         private System.Windows.Forms.Button btnAlta;
         private System.Windows.Forms.Label lblPorcPAMI;
         private System.Windows.Forms.Label lblPorcOsde;
@@ -1007,6 +1019,7 @@
         private System.Windows.Forms.Label lblCantCardio;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label lblDescuentoAnual;
+        private System.Windows.Forms.Button btnLimpiarCampos;
     }
 }
 
