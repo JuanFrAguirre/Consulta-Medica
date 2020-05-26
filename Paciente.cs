@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Stream_25_05
 {
@@ -116,14 +117,15 @@ namespace Stream_25_05
         public string MostrarDatos()
         {
             string mensaje = $"Alta registrada satisfactoriamente\n" +
-                $"---------------------------------------\n\t" +
-                $"Datos paciente:\n" +
+                $"---------------------------------------\n\n" +
+                $"     Datos paciente:\n" +
+                $"    -----------------\n\n" +
                 $"Nombre completo:\n" +
                 $"{Nombre} {Apellido}\n\n" +
                 $"Tipo y Numero de Documento:\n" +
                 $"{TipoDocumentoToString()}: {NroDoc}\n\n" +
                 $"Sexo y Fecha Nacimiento:\n" +
-                $"{SexoToString()} - {FechaNac.ToShortDateString()}\n\n" +
+                $"{SexoToString()}  -  {FechaNac.ToShortDateString()}\n\n" +
                 $"Estado civil: \n" +
                 $"{EsCasadoToString()}\n\n";
             if (TieneObraSocial)
@@ -131,11 +133,12 @@ namespace Stream_25_05
                 mensaje += $"Obra Social:\n" +
                     $"{ObraSocialToString()}\n\n";
             }
-            mensaje += $"\tDatos consulta:\n" +
+            mensaje += $"\n     Datos consulta:\n" +
+                $"    ----------------\n\n" +
                 $"Especialidad de la consulta:\n" +
                 $"{EspecialidadToString()}\n\n" +
                 $"Precio y fecha de la consulta:\n" +
-                $"{PrecioConsulta} - {FechaConsulta.ToShortDateString()}\n" +
+                $"${PrecioConsulta}  -  {FechaConsulta.ToShortDateString()}\n\n" +
                 $"---------------------------------------";
             return mensaje;
         }

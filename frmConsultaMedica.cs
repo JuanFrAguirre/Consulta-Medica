@@ -12,7 +12,7 @@ namespace Stream_25_05
 {
     public partial class frmConsultaMedica : Form
     {
-        private double porcCardio, porcOdonto, porcPedia, porcMedife, porcOSDE, porcPAMI, acuTotalMensual, acutTotalAnual, acuDescuentoMensual, acuDescuentoAnual;
+        private double porcCardio, porcOdonto, porcPedia, porcMedife, porcOSDE, porcPAMI, acuTotalMensual, acutTotalAnual, acuTotalMensualTotal, acuTotalAnualTotal, acuDescuentoMensual, acuDescuentoAnual;
         private int contCardio, contOdonto, contPedia, contMedife, contOSDE, contPAMI, contConsultas, contConsultasConObraSocial;
         private bool esPrimerPaciente = true;
         private Paciente consultaMax, consultaMin;
@@ -20,7 +20,7 @@ namespace Stream_25_05
         public frmConsultaMedica()
         {
             InitializeComponent();
-            porcCardio = porcOdonto = porcPedia = porcMedife = porcOSDE = porcPAMI = acuTotalMensual = acutTotalAnual = acuDescuentoMensual = acuDescuentoAnual = contCardio = contOdonto = contPedia = contMedife = contOSDE = contPAMI = contConsultas = contConsultasConObraSocial = 0;
+            porcCardio = porcOdonto = porcPedia = porcMedife = porcOSDE = porcPAMI = acuTotalMensual = acutTotalAnual = acuTotalMensualTotal = acuTotalAnualTotal = acuDescuentoMensual = acuDescuentoAnual = contCardio = contOdonto = contPedia = contMedife = contOSDE = contPAMI = contConsultas = contConsultasConObraSocial = 0;
         }
 
         private void btnAlta_Click(object sender, EventArgs e)
@@ -110,9 +110,9 @@ namespace Stream_25_05
                 lblCantOsde.Text = contOSDE.ToString();
                 lblCantPAMI.Text = contPAMI.ToString();
 
-                lblPorcMedife.Text = porcMedife.ToString();
-                lblPorcOsde.Text = porcOSDE.ToString();
-                lblPorcPAMI.Text = porcPAMI.ToString();
+                lblPorcMedife.Text = porcMedife.ToString() + "%";
+                lblPorcOsde.Text = porcOSDE.ToString() + "%";
+                lblPorcPAMI.Text = porcPAMI.ToString() + "%";
             }
 
             // especialidad mas cara y precio y mas barata y precio
@@ -139,19 +139,39 @@ namespace Stream_25_05
 
             // datos contables acumulados (en proceso, queda para el proximo zoom)
 
-            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && !chkTieneObraSocial.Checked) acuTotalMensual += pacienteCero.PrecioConsulta;
+            // total mensual
+
+            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month) acuTotalMensualTotal += pacienteCero.PrecioConsulta;
 
             if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 1) acuTotalMensual += pacienteCero.PrecioConsulta * 0.8;
 
             if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 2) acuTotalMensual += pacienteCero.PrecioConsulta * 0.7;
 
-            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 2) acuTotalMensual += pacienteCero.PrecioConsulta * 0.95;
+            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 3) acuTotalMensual += pacienteCero.PrecioConsulta * 0.95;
 
-            lblTotalMensual.Text = acuTotalMensual.ToString();
+            if (pacienteCero.FechaConsulta.Month == DateTime.Today.Month && !chkTieneObraSocial.Checked) acuTotalMensual += pacienteCero.PrecioConsulta;
+
+            // total anual
+
+            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year) acuTotalAnualTotal += pacienteCero.PrecioConsulta;
+
+            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 1) acutTotalAnual += pacienteCero.PrecioConsulta * 0.8;
+
+            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 2) acutTotalAnual += pacienteCero.PrecioConsulta * 0.7;
+
+            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year && chkTieneObraSocial.Checked && pacienteCero.ObraSocial == 3) acutTotalAnual += pacienteCero.PrecioConsulta * 0.95;
+
+            if (pacienteCero.FechaConsulta.Year == DateTime.Today.Year && !chkTieneObraSocial.Checked) acutTotalAnual += pacienteCero.PrecioConsulta;
+
+            lblTotalMensual.Text = "$" + acuTotalMensual.ToString();
+            lblTotalAnual.Text = "$" + acutTotalAnual.ToString();
+
+            lblDescuentoMensual.Text = "$" + (acuTotalMensualTotal - acuTotalMensual).ToString();
+            lblDescuentoAnual.Text = "$" + (acuTotalAnualTotal - acutTotalAnual).ToString();
 
             // Mensaje de alta de paciente en el registro
 
-            //MessageBox.Show(pacienteCero.MostrarDatos(), "Estado de la venta", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(pacienteCero.MostrarDatos(), "Estado de la venta", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
